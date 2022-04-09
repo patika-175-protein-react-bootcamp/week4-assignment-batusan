@@ -17,8 +17,8 @@ const PlayProvider = ({ children }) => {
     setQuestions([...Questions, data]);
   };
 
-  const addScore = () => {
-    setScore(Score + 1);
+  const addScore = (number) => {
+    setScore(Score + number);
   };
 
   const increaseQuestionCounter = () => {
