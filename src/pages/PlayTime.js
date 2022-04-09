@@ -50,7 +50,7 @@ function PlayTime() {
       */
 
       setTimeout(function () {
-        addScore(Math.ceil(Math.sqrt(e)));
+        addScore(Math.ceil(Math.sqrt(number)));
         increaseQuestionCounter();
         addCorrect();
         addQuestionResult({
