@@ -5,11 +5,16 @@ const PlayContext = React.createContext();
 const PlayProvider = ({ children }) => {
   const [Score, setScore] = useState(0);
   const [Tour, setTour] = useState(1);
-  const [Questions, setQuestions] = useState(1);
+  const [QuestionCount, setQuestionCount] = useState(1);
   const [CorrectCount, setCorrectCounter] = useState(0);
+  const [Questions, setQuestions] = useState([]);
 
   const addCorrect = () => {
     setCorrectCounter(CorrectCount + 1);
+  };
+
+  const addQuestionResult = (data) => {
+    setQuestions([...Questions, data]);
   };
 
   const addScore = () => {
@@ -17,7 +22,7 @@ const PlayProvider = ({ children }) => {
   };
 
   const increaseQuestionCounter = () => {
-    setQuestions(Questions + 1);
+    setQuestionCount(QuestionCount + 1);
   };
 
   const addTour = () => {
@@ -30,8 +35,10 @@ const PlayProvider = ({ children }) => {
         Score,
         Tour,
         Questions,
+        QuestionCount,
         CorrectCount,
         addScore,
+        addQuestionResult,
         increaseQuestionCounter,
         addTour,
         addCorrect,

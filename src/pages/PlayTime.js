@@ -14,18 +14,23 @@ function PlayTime() {
   const [SecondNumber, setSecondNumber] = useState(0);
   const [Answers, setAnswers] = useState([]);
 
-  const { addScore, increaseQuestionCounter, addCorrect, Questions } =
-    usePlayContext();
+  const {
+    addScore,
+    increaseQuestionCounter,
+    addCorrect,
+    QuestionCount,
+    addQuestionResult,
+  } = usePlayContext();
 
   useEffect(() => {
     initNumbers();
   }, []);
 
   useEffect(() => {
-    if (Questions === 7) {
+    if (QuestionCount === 7) {
       navigate("/final");
     }
-  }, [Questions]);
+  }, [QuestionCount]);
 
   const handleAnswerClick = (e) => {
     if (e === FirstNumber * SecondNumber) {
@@ -34,12 +39,21 @@ function PlayTime() {
         addScore(Math.ceil(Math.sqrt(e)));
         increaseQuestionCounter();
         addCorrect();
+        addQuestionResult({
+          question: `${FirstNumber} x ${SecondNumber}`,
+          result: "✔",
+        });
+
         initNumbers();
       }, 3000);
     } else {
       document.body.style.background = "#FA0000";
       setTimeout(function () {
         increaseQuestionCounter();
+        addQuestionResult({
+          question: `${FirstNumber} x ${SecondNumber}`,
+          result: "X",
+        });
         initNumbers();
       }, 3000);
     }
