@@ -9,7 +9,7 @@ function ShortUnderline(props) {
       viewBox="0 0 228 8"
       fill="none"
     >
-      <text x={props.x} y={props.y} class="font finalText">
+      <text x={props.x} y={props.y} fill={props.color} class="font finalText">
         {props.text}
       </text>
       <path

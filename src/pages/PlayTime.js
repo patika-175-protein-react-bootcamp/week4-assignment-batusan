@@ -4,7 +4,12 @@ import TopBar from "../components/TopBar";
 import PlayTableIcon from "../constants/icon/PlayTableIcon";
 import AnswerBubble from "../constants/icon/AnswerBubble";
 import { usePlayContext } from "../contexts/PlayContext";
-import { getRandomInt, randomOperation, shuffle } from "../utils/util";
+import {
+  getRandomInt,
+  isUnique,
+  randomOperation,
+  shuffle,
+} from "../utils/util";
 import { useNavigate } from "react-router-dom";
 
 function PlayTime() {
@@ -27,14 +32,23 @@ function PlayTime() {
   }, []);
 
   useEffect(() => {
-    if (QuestionCount === 7) {
+    if (QuestionCount === 10) {
       navigate("/final");
     }
   }, [QuestionCount]);
 
-  const handleAnswerClick = (e) => {
-    if (e === FirstNumber * SecondNumber) {
+  const handleAnswerClick = (e, number) => {
+    if (number === FirstNumber * SecondNumber) {
       document.body.style.background = "#00BF63";
+
+      /*fill black to selected answer
+      Array.from(e.target.childNodes).map((nodes) => {
+        if (nodes) {
+          nodes.setAttribute("fill", "black");
+        }
+      });
+      */
+
       setTimeout(function () {
         addScore(Math.ceil(Math.sqrt(e)));
         increaseQuestionCounter();
@@ -44,16 +58,41 @@ function PlayTime() {
           result: "✔",
         });
 
+        /*Change fill color to white
+        Array.from(e.target.childNodes).map((nodes) => {
+          nodes.setAttribute("fill", "white");
+        });
+        */
+
         initNumbers();
       }, 3000);
     } else {
       document.body.style.background = "#FA0000";
+
+      let numb = document.getElementById("answers").childNodes;
+      let correctNode;
+
+      Array.from(numb).map((num) => {
+        //Correct Result Match
+        if (num.textContent == FirstNumber * SecondNumber) {
+          Array.from(num.childNodes).map((nodes) => {
+            nodes.setAttribute("fill", "green");
+            correctNode = num.childNodes;
+          });
+        }
+      });
+
       setTimeout(function () {
         increaseQuestionCounter();
         addQuestionResult({
           question: `${FirstNumber} x ${SecondNumber}`,
           result: "X",
         });
+
+        Array.from(correctNode).map((nodes) => {
+          nodes.setAttribute("fill", "white");
+        });
+
         initNumbers();
       }, 3000);
     }
@@ -65,14 +104,18 @@ function PlayTime() {
     setFirstNumber(numArr[0]);
     setSecondNumber(numArr[1]);
 
-    let answers = [];
+    let answers = randomAnswers(numArr);
+    setAnswers(shuffle(answers));
+  };
 
+  //Recursive unique answers
+  const randomAnswers = (numArr) => {
+    let answers = [];
     answers.push(numArr[0] * numArr[1]);
     for (let i = 0; i < 2; i++) {
       answers.push(randomOperation(numArr));
     }
-
-    setAnswers(shuffle(answers));
+    return isUnique(answers) === 3 ? answers : randomAnswers(numArr);
   };
 
   return (

@@ -111,7 +111,6 @@ body {
 
 .number {
   font-size: 100px;
-  fill: white;
 }
 
 .finalDiv {
@@ -136,5 +135,12 @@ body {
 
 .finalText {
   font-size: 50px;
+}
+
+.fillWhite{
+  fill:white;
+}
+
+.fillRed {
   fill: red;
 }

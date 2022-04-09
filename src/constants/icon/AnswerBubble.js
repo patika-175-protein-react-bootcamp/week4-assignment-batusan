@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 function AnswerBubble(props) {
   return (
@@ -7,13 +7,19 @@ function AnswerBubble(props) {
       id={props.id}
       width={props.width}
       height={props.height}
-      onClick={() => {
-        props.handleClick(props.number);
+      onClick={(e) => {
+        props.handleClick(e,props.number);
       }}
       viewBox="0 0 203 178"
       fill="none"
     >
-      <text id="mathFirstNumber" x="40" y="120" class="font number">
+      <text
+        id="mathFirstNumber"
+        x="40"
+        y="120"
+        fill="white"
+        class="font number"
+      >
         {props.number}
       </text>
       <path
