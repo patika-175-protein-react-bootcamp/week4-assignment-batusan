@@ -5,6 +5,8 @@ export function getRandomInt(min, max) {
 }
 
 export function randomOperation(numArr) {
+  let tempArr = numArr.slice(0); // bugfix
+
   let selectedNum = getRandomInt(0, 2);
   let randomOperator = getRandomInt(0, 2);
 
@@ -12,16 +14,16 @@ export function randomOperation(numArr) {
 
   switch (operators[randomOperator]) {
     case "+":
-      numArr[selectedNum]++;
+      tempArr[selectedNum]++;
       break;
     case "-":
-      numArr[selectedNum]--;
+      tempArr[selectedNum]--;
       break;
     default:
-      numArr[selectedNum]++;
+      tempArr[selectedNum]++;
   }
 
-  return numArr[0] * numArr[1];
+  return tempArr[0] * tempArr[1];
 }
 
 export function shuffle(array) {
