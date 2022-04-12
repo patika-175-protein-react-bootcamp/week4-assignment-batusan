@@ -18,6 +18,7 @@ function PlayTime() {
   const [FirstNumber, setFirstNumber] = useState(0);
   const [SecondNumber, setSecondNumber] = useState(0);
   const [Answers, setAnswers] = useState([]);
+  const [isDisable, setDisable] = useState(false);
 
   const {
     addScore,
@@ -38,68 +39,72 @@ function PlayTime() {
   }, [QuestionCount]);
 
   const handleAnswerClick = (e, number) => {
-    if (number === FirstNumber * SecondNumber) {
-      document.body.style.background = "#00BF63";
+    if (!isDisable) {
+      setDisable(true);
+      if (number === FirstNumber * SecondNumber) {
+        document.body.style.background = "#00BF63";
 
-      /*fill black to selected answer
-      Array.from(e.target.childNodes).map((nodes) => {
-        if (nodes) {
-          nodes.setAttribute("fill", "black");
-        }
-      });
-      */
-
-      setTimeout(function () {
-        addScore(Math.ceil(Math.sqrt(number)));
-        increaseQuestionCounter();
-        addCorrect();
-        addQuestionResult({
-          question: `${FirstNumber} x ${SecondNumber}`,
-          result: "✔",
-        });
-
-        /*Change fill color to white
+        /*fill black to selected answer
         Array.from(e.target.childNodes).map((nodes) => {
-          nodes.setAttribute("fill", "white");
+          if (nodes) {
+            nodes.setAttribute("fill", "black");
+          }
         });
         */
 
-        initNumbers();
-      }, 3000);
-    } else {
-      document.body.style.background = "#FA0000";
-
-      let numb = document.getElementById("answers").childNodes;
-      let correctNode;
-
-      Array.from(numb).map((num) => {
-        //Correct Result Match
-        if (num.textContent == FirstNumber * SecondNumber) {
-          Array.from(num.childNodes).map((nodes) => {
-            nodes.setAttribute("fill", "green");
-            correctNode = num.childNodes;
+        setTimeout(function () {
+          addScore(Math.ceil(Math.sqrt(number)));
+          increaseQuestionCounter();
+          addCorrect();
+          addQuestionResult({
+            question: `${FirstNumber} x ${SecondNumber}`,
+            result: "✔",
           });
-        }
-      });
 
-      setTimeout(function () {
-        increaseQuestionCounter();
-        addQuestionResult({
-          question: `${FirstNumber} x ${SecondNumber}`,
-          result: "X",
+          /*Change fill color to white
+          Array.from(e.target.childNodes).map((nodes) => {
+            nodes.setAttribute("fill", "white");
+          });
+          */
+
+          initNumbers();
+        }, 3000);
+      } else {
+        document.body.style.background = "#FA0000";
+
+        let numb = document.getElementById("answers").childNodes;
+        let correctNode;
+
+        Array.from(numb).map((num) => {
+          //Correct Result Match
+          if (num.textContent == FirstNumber * SecondNumber) {
+            Array.from(num.childNodes).map((nodes) => {
+              nodes.setAttribute("fill", "green");
+              correctNode = num.childNodes;
+            });
+          }
         });
 
-        Array.from(correctNode).map((nodes) => {
-          nodes.setAttribute("fill", "white");
-        });
+        setTimeout(function () {
+          increaseQuestionCounter();
+          addQuestionResult({
+            question: `${FirstNumber} x ${SecondNumber}`,
+            result: "X",
+          });
 
-        initNumbers();
-      }, 3000);
+          Array.from(correctNode).map((nodes) => {
+            nodes.setAttribute("fill", "white");
+          });
+
+          initNumbers();
+        }, 3000);
+      }
     }
   };
 
   const initNumbers = () => {
     document.body.style.background = "#2d2d2d";
+    setDisable(false);
     let numArr = [getRandomInt(0, 10), getRandomInt(0, 10)];
     setFirstNumber(numArr[0]);
     setSecondNumber(numArr[1]);
